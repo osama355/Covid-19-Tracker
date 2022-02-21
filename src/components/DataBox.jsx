@@ -3,6 +3,7 @@ import { styled } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Paper from "@mui/material/Paper";
 import Grid from "@mui/material/Grid";
+import NumberFormat from 'react-number-format'
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -16,7 +17,7 @@ export default function DataBox(props) {
   const { totalConfirmed, totalRecovered, totalDeaths, country } = props
   return (
     <Box sx={{ flexGrow: 1, margin: "0 auto", marginTop:'5px', marginBottom:"50px", maxWidth: 1000 }}>
-      <h1>{!country ? "GLOBAL REPORT OF CORONA" : country}</h1>
+      <h2 style={{textTransform:"uppercase"}}>{!country ? "GLOBAL REPORT OF CORONA" : country}</h2>
       <Grid container spacing={3}>
         <Grid item xs={12} sm={4}>
           <Item elevation={3}>

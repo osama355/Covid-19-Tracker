@@ -1,27 +1,91 @@
-import { fontFamily } from '@mui/system'
-import React from 'react'
+import React, { useState } from "react";
+import axios from "../axios";
 
-const style={
-    select:{
-        padding:'10px',
-        fontWeight:"light",
-        fontSize:"0.8em",
-        cursor:"pointer"
-    },
-    option:{
-        // color:"#1976D2"
-    }
+const style = {
+  select: {
+    padding: "10px",
+    fontWeight: "light",
+    fontSize: "0.8em",
+    cursor: "pointer",
+  },
+};
 
-}
-export default function SelectBox({coronaSummary}) {
+export default function SelectBox({
+  coronaSummary,
+  setCoronaCount,
+  allData,
+  setAllData,
+  setLabel,
+  country,
+  setCountry
+}) {
+
+  const [days, setDays] = useState(7);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = `0${d.getMonth() + 1}`.slice(-2);
+    const _date = d.getDate();
+    return `${year}-${month}-${_date}`;
+  };
+
+  const handleCountry = (e) => {
+    setCountry(e.target.value);
+    const d = new Date();
+    const to = formatDate(d);
+    const from = formatDate(d.setDate(d.getDate() - days));
+    console.log(from, to);
+    getDataByCountry(e.target.value, from, to);
+  };
+
+  const handleDays = (e) => {
+    const d = new Date();
+    const to = formatDate(d);
+    const from = formatDate(d.setDate(d.getDate() - e.target.value));
+    setDays(e.target.value);
+    getDataByCountry(country,from,to)
+  };
+
+  const getDataByCountry = async (countrySlug, from, to) => {
+    const countryData = await axios.get(
+      `/country/${countrySlug}/status/confirmed?from=${from}T00:00:00Z&to=${to}T00:00:00Z`
+    );
+
+    console.log(countryData);
+
+    const verticalChartData = countryData.data.map((d) => d.Cases);
+    const horizontalChartLabel= countryData.data.map((d)=>d.Date)
+    const coronaDetails = coronaSummary.Countries.find(
+      (country) => country.Slug === countrySlug
+    );
+
+    setCoronaCount(verticalChartData);
+    setLabel(horizontalChartLabel)
+    setAllData({
+      totalConfirmed: coronaDetails.TotalConfirmed,
+      totalRecovered: coronaDetails.TotalRecovered,
+      totalDeaths: coronaDetails.TotalDeaths,
+    });
+  };
 
   return (
-    <select style={style.select}>
-        {
-            coronaSummary.Countries && coronaSummary.Countries.map((country,key)=>(
-                <option style={style.option} key={key} value={country.Slug} >{country.Country}</option>
-            ))
-        }
-    </select>
-  )
+    <div>
+      <select onChange={handleCountry} value={country} style={style.select}>
+          <option value="">Select Country</option>
+        {coronaSummary.Countries &&
+          coronaSummary.Countries.map((country, key) => (
+            <option key={key} value={country.Slug}>
+              {country.Country}
+            </option>
+          ))}
+      </select>
+
+      <select onChange={handleDays} value={days}>
+        <option value="7">Last 7 days</option>
+        <option value="30">Last 30 days</option>
+        <option value="90">Last 90 days</option>
+      </select>
+    </div>
+  );
 }
