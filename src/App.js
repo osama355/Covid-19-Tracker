@@ -3,8 +3,9 @@ import "./App.css";
 import DataBox from "./components/DataBox";
 import NavBar from "./components/NavBar";
 import LineGraph from "./components/LineGraph";
-import axios from "./axios";
 import SelectBox from "./components/SelectBox";
+import Loader from "./components/Loader";
+import axios from "./axios";
 
 function App() {
   const [allData, setAllData] = useState({
@@ -38,7 +39,7 @@ function App() {
   }, []);
 
   if (loading) {
-    return <h1>Waiting for response</h1>;
+    return <Loader/>
   }
 
   return (
@@ -53,7 +54,6 @@ function App() {
       <SelectBox
         coronaSummary={coronaSummary}
         setCoronaCount={setCoronaCount}
-        allData={allData}
         setAllData={setAllData}
         setLabel={setLabel}
         country={country}

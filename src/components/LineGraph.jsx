@@ -10,7 +10,9 @@ const style = {
   graph: {
     width: "600px",
     height: "600px",
-    margin: "10px auto",
+    margin: "30px auto",
+    border:"2px solid #CCCCCC",
+    padding:"15px"
   },
 };
 
