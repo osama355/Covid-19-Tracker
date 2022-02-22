@@ -1,20 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import Chart from "chart.js/auto";
-
-const style = {
-  main: {
-    marginTop: "20px",
-    textTransform: "uppercase",
-  },
-  graph: {
-    width: "600px",
-    height: "600px",
-    margin: "30px auto",
-    border:"2px solid #CCCCCC",
-    padding:"15px"
-  },
-};
+import './Styling/lineGraph.css';
 
 export default function LineGraph({verticalAxis,horizontalAxis}) {
   const data = {
@@ -43,8 +30,8 @@ export default function LineGraph({verticalAxis,horizontalAxis}) {
     ],
   };
   return (
-    <div style={style.main}>
-      <Line style={style.graph} data={data} />
+    <div className="main">
+      <Line className="graph" data={data} />
     </div>
   );
 }

@@ -1,12 +1,6 @@
 import React from "react";
 import "./Styling/loader.css";
 
-// function Loader() {
-//   return (
-//     <div className='loader'></div>
-//   )
-// }
-
 function Loader() {
   return (
     <div className="mainBody">
